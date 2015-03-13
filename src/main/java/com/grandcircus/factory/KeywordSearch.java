@@ -46,6 +46,7 @@ public class KeywordSearch {
 		} catch (IOException e) {
 			System.out.println("Exception -- " + e.getMessage());
 			System.exit(1);
+			//test
 		}
 	}
 }
