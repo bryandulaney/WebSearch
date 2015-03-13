@@ -9,9 +9,16 @@ import java.util.ArrayList;
 
 public class KeywordSearch {
 	String file = ("/resources/words.txt");
+	String url =("");
+	List<String>keyWords;
+	List<String> urlAddress;
+	
+	KeywordSearch() {
+		keyWords(file);
+		urlAddress(url);
+	}
 
-	public List<String> keyWords(String file) {
-		List<String> keyWords = new ArrayList<String>();
+	public void keyWords(String file) {
 
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file3 = new File(classLoader.getResource(file).getFile());
@@ -26,61 +33,19 @@ public class KeywordSearch {
 		} catch (IOException e) {
 			System.out.println("Exception -- " + e.getMessage());
 			System.exit(1);
-			return null;
 		}
-		return keyWords;
-
+	}
+	
+	public void urlAddress(String url) {
+		try {
+			BufferedReader buff = new BufferedReader(new FileReader(file));
+			for (String str = buff.readLine(); str != null; str = buff.readLine()) {
+				urlAddress.add(str);
+			}
+			buff.close();
+		} catch (IOException e) {
+			System.out.println("Exception -- " + e.getMessage());
+			System.exit(1);
+		}
 	}
 }
-
-/*String searchFile = ("resources/SearchTerms.txt");
-String articleFile = ("resources/Articles.txt");
-List<String> keyWords;
-List<String> articleAddresses;
-
-KeywordSearch () {
-	keyWords(searchFile);
-	articleSearch(articleFile);
-}
-
-public void keyWords(String file) {
-	ClassLoader classLoader = getClass().getClassLoader();
-	File file3 = new File(classLoader.getResource(file).getFile());
-
-	try {
-		BufferedReader buff = new BufferedReader(new FileReader(file3));
-		for (String str = buff.readLine(); str != null; str = buff
-				.readLine()) {
-			keyWords.add(str);
-		}
-		buff.close();
-	} catch (IOException e) {
-		System.out.println("Exception -- " + e.getMessage());
-		System.exit(1);
-	}
-}
-
-public void articleSearch(String file) {
-	try {
-		BufferedReader buff = new BufferedReader(new FileReader(file));
-		for (String str = buff.readLine(); str != null; str = buff.readLine()) {
-			articleAddresses.add(str);
-		}
-		buff.close();
-	} catch (IOException e) {
-		System.out.println("Exception -- " + e.getMessage());
-		System.exit(1);
-	}
-}
-
-
-public static void main (String arguments[]) throws IOException {
-	
-	
-	
-	WebpageSearch testArticle = new WebpageSearch("https://medium.com/backchannel/cody-wilson-wants-to-destroy-your-world-ad121c8b0a6");
-	testArticle.search("BM");
-	
-}
-}
-*/
