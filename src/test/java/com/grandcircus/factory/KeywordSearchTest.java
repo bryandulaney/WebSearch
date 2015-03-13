@@ -21,7 +21,7 @@ public class KeywordSearchTest {
 
 	@Test
 	public void shouldReturnWords() {
-		assertValues(file, "abc def ghi");
+		assertValues(file, "abc, def, ghi");
 	}
 
 	private <T> void assertValues(String file, T... expected) {
