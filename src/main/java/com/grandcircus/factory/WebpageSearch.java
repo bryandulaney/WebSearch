@@ -1,5 +1,6 @@
 package com.grandcircus.factory;
 
+
 import java.util.*;
 import java.util.regex.*;
 import java.io.*;
@@ -7,20 +8,19 @@ import java.net.*;
 
 public class WebpageSearch {
 
-	private String mWebAddress;
+	String mWebAddress;
 	
-	private String mWebPage;
+	String mWebPage;
 	
-	private ArrayList mPageIndex = new ArrayList();
+	ArrayList<String> mPageIndex = new ArrayList<String>();
 
-	WebpageSearch(String address) {
+	WebpageSearch(String address) throws IOException {
 		mWebAddress = address;
-		// WebpageSearch applepie = New WebpageSearch();
-		// applepie.mWebAddress = "crust";
-		// indexPage();
+		streamPage();
+		indexPage();
 	}
 	
-	private void streamPage () throws IOException {	
+	void streamPage () throws IOException {	
 		// Fetch webpage using URLConnection and URL
 		URL url = new URL(mWebAddress);
 		URLConnection con = url.openConnection();
@@ -41,9 +41,9 @@ public class WebpageSearch {
 		mWebPage = sb.toString();
 	}
 	
-	private void indexPage () {
+	void indexPage () {
 		// Tokenize mWebPage
-        StringTokenizer st = new StringTokenizer(mWebPage,"[]{}://&., -<>()?!;—\\s\\b’“”");
+        StringTokenizer st = new StringTokenizer(mWebPage,"‘|…\"#%*[]{}://&.$+\', -<>()?!;=—\\s\\b’“”");
         
         // Fill index array
         for (int i = 0; i < st.countTokens(); i++) {
@@ -54,21 +54,26 @@ public class WebpageSearch {
         Collections.sort(mPageIndex);
 	}
 	
-	private boolean binarySearch (String keyword) {
+	boolean binarySearch (String keyword) {
 		int indexing = Collections.binarySearch(mPageIndex, keyword);
-		if (indexing < 0) {
-			return false;
-		} else {
+		if (indexing >= 0) {
 			return true;
+		} else {
+			return false;
 		}
 	}
-	
-	private void createFile(String keyword) {
+
+	// Add updateFile method (separated out from createFile method)
+	void updateFile(String keyword) {
 		
 		// Find and Replace keyword with highlights in page
-		String regex = ".*\\b" + keyword + "\\b.*";
 		String replacement = "<span style=\"background-color: #FFFF00\">" + keyword + "</span>";
-		mWebPage.replaceAll(regex, replacement);
+		mWebPage = mWebPage.replaceAll("\\b" + keyword + "\\b", replacement);
+		
+	}
+	
+	// Updated to only contain final File Writing Step, removed paraameter
+	void createFile() {
 		
 		// Name File
 		String file = nameFile(mWebAddress);
@@ -86,22 +91,25 @@ public class WebpageSearch {
 		}
 		
 		// Inform user
-		System.out.println("Your file has been created. It's called: " + file);
+		System.out.println("Your searched file has been created. It's called: " + file);
 	}
 	
-	private String nameFile(String inputAddress) {
+	 String nameFile(String inputAddress) {
 		// Create a substring for stuff after the last / in inputAddress
 		// and append file extension .html
 		String outputName = inputAddress.substring(inputAddress.lastIndexOf("/") + 1) + ".html";	
 		return outputName;
 	}
 
-	public void search(String keyword) {
-		if (this.binarySearch(keyword)) {
-			this.createFile(keyword);
-		} else {
-			System.out.println("Not here!");
+	// Changed parameter to ArrayList
+	public void search(ArrayList<String> keywordList) {
+		// Add for-loop to check each keyword in list
+		for (String keyword : keywordList) {
+			if (this.binarySearch(keyword)) {
+				this.updateFile(keyword);
+			}			
 		}
+		this.createFile();
 	}
 
 	
