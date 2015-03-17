@@ -44,28 +44,18 @@ public class JsoupSearch {
         Collections.sort(mPageIndex);
 	}
 	
-	boolean binarySearch (String keyword) {
-		// Run binary search
+	boolean doesPageContainKeyword (String keyword) {
 		int indexing = Collections.binarySearch(mPageIndex, keyword);
-		// Return true if keyword is found anywhere in document, return false if not found
-		if (indexing >= 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return indexing >= 0;
 	}
 	
-	// Added updateFile method to highlight keywords (previously in createFile method, only ran for one word)
 	void updateFile(String keyword) {		
-		// Find and Replace keyword with highlights in page
 		String replacement = "<span style=\"background-color: #FFFF00\">" + keyword + "</span>";
 		mWebPageHTML = mWebPageHTML.replaceAll("\\b" + keyword + "\\b", replacement);
 		
 	}
 	
 	 String nameFile(String inputAddress) {
-		// Create a substring for stuff after the last / in inputAddress
-		// and append file extension .html
 		String outputName = inputAddress.substring(inputAddress.lastIndexOf("/") + 1) + "+JSoup.html";	
 		return outputName;
 	}
@@ -92,11 +82,9 @@ public class JsoupSearch {
 	}
 	
 
-	// Changed parameter to ArrayList to highlight multiple keywords
 	public void search(ArrayList<String> keywordList) {
-		// Add for-loop to check each keyword in list
 		for (String keyword : keywordList) {
-			if (this.binarySearch(keyword)) {
+			if (this.doesPageContainKeyword(keyword)) {
 				this.updateFile(keyword);
 			}			
 		}

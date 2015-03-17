@@ -78,17 +78,7 @@ public class KeywordSearch {
 			e.printStackTrace();
 		}
 	
-		// get last word of indexed google page
-		try {
-			JsoupSearch testArticle = new JsoupSearch("http://google.com");
-			JsoupSearch testArticleJsoup = new JsoupSearch("http://google.com");
-			System.out.println(testArticle.mPageIndex.get(testArticle.mPageIndex.size() - 1));
-			System.out.println(testArticleJsoup.mPageIndex.get(testArticleJsoup.mPageIndex.size() -1) + " (Jsoup)");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 		
 		
 	}

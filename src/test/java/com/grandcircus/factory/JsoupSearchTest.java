@@ -67,7 +67,7 @@ public class JsoupSearchTest {
 		
 		JsoupSearch testObject = new JsoupSearch("http://google.com");
 		
-		if (testObject.binarySearch("Grand Circus")) {
+		if (testObject.doesPageContainKeyword("Grand Circus")) {
 			fail();
 		}
 	}
